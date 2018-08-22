@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>123123</title>
+        <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/dropzone.css" rel="stylesheet">
+    </head>
+    <body >
+        <div>
+            <select id="select">
+                <option value="未选择" selected>--未选择--</option>
+                <option value="2017">2017年</option>
+                <option value="2018">2018年</option>
+            </select>
+        </div>
+
+        <div id="main" style="width: 100%;height:400px;"></div>
+
+        
+        <script src="/static/jquery.js"></script>
+        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/dropzone.js"></script>
+        <script src="/static/echarts.min.js"></script>
+
+
+        <script type="text/javascript">
+
+
+            $('#select').on('change',function(){
+                if($('#select').val()=='未选择'){
+                    alert('请选择查询年份')
+                    return false
+                }
+
+                $.ajax({
+                url:'/api/count',
+                type:'POST',
+                data:{year:$('#select').val()},
+                dataType:'json'
+            }).success(function(res){
+                console.log(res)
+                
+                var a=[]
+                var b=[]
+                for (var i=0;i<res.data.length;i++){
+                    a.push(res.data[i].month)
+                    b.push(res.data[i].sumprice)
+                }
+
+                console.log(a)
+                console.log(b)
+
+
+
+                var myChart = echarts.init(document.getElementById('main'));
+
+                var option = {
+                    title: {
+                        text: 'ECharts 入门示例'
+                    },
+                    tooltip: {},
+                    legend: {
+                        data:['销量']
+                    },
+                    xAxis: {
+                        data: a
+                    },
+                    yAxis: {},
+                    series: [{
+                        name: '销量',
+                        type: 'bar',
+                        data: b
+                    }]
+                };
+                myChart.setOption(option);
+                
+            })
+            })
+            
+            
+        </script>
+    </body>
+</html>     

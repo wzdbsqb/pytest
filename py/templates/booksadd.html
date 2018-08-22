@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+    <!-- Bootstrap -->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/dropzone.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+        <div class ="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1 class="text-center">书籍添加</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <form id="form">
+                        <div class="control-group">
+                                <label>书籍名称:</label>
+                                <input class="form-control" type="text" id="name" name="name"><br><br>
+                        </div>
+
+                        <div class="control-group">
+                                <label>原价:</label>
+                                <input class="form-control" type="text" id="price" name="price"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>现价:</label>
+                                <input class="form-control" type="text" id="pprice" name="pprice"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>标签:</label>
+                                <input class="form-control" type="text" id="tag" name="tag"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>简介:</label>
+                                <input class="form-control" type="text" id="intro" name="intro"><br><br>
+                        </div>
+
+                        
+                        
+                        <button class="btn btn-primary btn-block" id="submit">确认</button> 
+                    </div>  
+                </form>
+                
+
+                
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/dropzone.js"></script>
+    <script>
+        var id=localStorage.getItem('id')
+        console.log(id)
+
+        
+
+
+        $('#submit').on('click',function(){
+            $.ajax({
+                url:'/api/booksadd/'+id,
+                type:'POST',
+                data:$('#form').serialize(),
+                dataType:'json'
+            }).success(function(res){
+                console.log(res.message)
+                if (res.status==200 && res.message=='添加成功'){
+                    alert('添加成功')
+                    location.href='/message'
+                }
+                
+            })
+        })
+            
+    </script>
+  </body>
+</html>

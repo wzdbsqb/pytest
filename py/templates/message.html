@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+
+  </head>
+  <body>
+    <div class="container">
+        <div class ="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1 class="text-center">书店信息</h1>
+                    <p  class="pull-right">
+                            <a href='/changepwd'>更改密码</a>
+                            <a href='/messagedit'>更改书店信息</a>
+                    </p>
+                     
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                                <div class="col-xs-6 col-md-3 thumbnail">
+                                        <img id="img">
+                                </div>
+                                    <p id="name"></p>
+                                    <p id="tel"></p>
+                                    <p id="addr"></p>
+                                    <p id="tag"></p>
+                                    <p id="dur"></p>
+                                    <p id="lat"></p>
+                                    <p id="long"></p>
+                                    
+                                    <p>营业资质:</p>
+                                    <p id="licence"></p>
+                                    <p>简介:</p>
+                                    <p id="intro"></p>
+
+                                    <!-- <p>
+                                            <span id="name"></span>
+                                            <span id="tel"></span>
+                                    </p> -->
+                    </div>
+                </div>
+                <a href='/booksadd' class="pull-right">添加书籍</a>
+                <div class="panel panel-primary">
+                        <div class="panel-body">
+                                <div id="table"></div>
+                        </div>
+                </div>
+                <button class="btn btn-primary btn-block" id="submit">查看销售记录</button> 
+                <button class="btn btn-primary btn-block" id="submit1">批量上传</button> 
+                <button class="btn btn-primary btn-block" id="submit2">生成书籍表单</button> 
+
+                
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/static/handlebars.min.js"></script>
+    <script>
+            var id=localStorage.getItem('id')
+           $.ajax({
+                url:'/api/user/'+id,
+                type:'GET',
+                dataType:'json'
+            }).success(function(res){
+                $('#name').text(res.data.name)
+                $('#tel').text(res.data.tel)
+                $('#addr').text(res.data.addr)
+                $('#tag').text(res.data.tag)
+                $('#pic').text(res.data.pic)
+                $('#intro').text(res.data.intro)
+                $('#lat').text(res.data.lat)
+                $('#long').text(res.data.long)
+                $('#dur').text(res.data.dur)
+                $('#licence').text(res.data.licence)
+                $('#img').attr('src',res.data.pic)
+
+                localStorage.setItem('name',res.data.name)
+                localStorage.setItem('tel',res.data.tel)
+                localStorage.setItem('addr',res.data.addr)
+                localStorage.setItem('tag',res.data.tag)
+                localStorage.setItem('pic',res.data.pic)
+                localStorage.setItem('intro',res.data.intro)
+                localStorage.setItem('lat',res.data.lat)
+                localStorage.setItem('long',res.data.long)
+                localStorage.setItem('dur',res.data.dur)
+                localStorage.setItem('licence',res.data.licence)
+                
+            })
+    </script>
+
+    
+    {%raw%}
+    <script id="template" type="text/template">
+        {{#each data}}
+        <div class="col-xs-6 col-md-3">
+            <a href="/booksedit/{{id}}" class="thumbnail"><img src="{{pic}}"></a>
+            书籍名称:
+            <h3>{{name}}</h3>
+            原价:
+            <p>{{price}}</p>
+            现价:
+            <p>{{pprice}}</p>
+            标签:
+            <p>{{tag}}</p>
+            简介:
+            <p>{{intro}}</p>
+            
+        </div>
+        {{/each}}
+    </script>
+    {%endraw%}
+    
+
+    <script>
+            var id=localStorage.getItem('id')
+            $.ajax({
+                url:'/api/books/'+id,
+                type:'GET',
+                dataType:'json'
+            }).success(function(res){
+                if(res.status==200){
+                    console.log(res.data)
+                    $('#table').html(Handlebars.compile($('#template').html())(res))
+                }
+            })
+    </script>
+
+    <script>
+         $('#submit').on('click',function(){
+             location.href='/count'
+         })
+    </script>
+
+    <script>
+            $('#submit1').on('click',function(){
+                location.href='/saveall'
+            })
+    </script>
+
+    <script>
+            var id=localStorage.getItem('id')
+            $('#submit2').on('click',function(){
+                $.ajax({
+                    url:'/creat/'+id,
+                    type:'GET',
+                    dataType:'json'
+                }).success(function(res){
+                    if(res.status==200){
+                        alert(res.message)
+                        location.href='static/excel/'+id+'.xlsx'
+                    }    
+                })
+            })
+
+
+    </script>
+
+    
+  </body>
+</html>

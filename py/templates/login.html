@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>Bootstrap 101 Template</title>
+
+    <!-- Bootstrap -->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Resp1ond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="container">
+        <div class ="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1 class="text-center">大撒比</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
+                <div class="panel panel-primary">
+                    <div class="panel-body">
+                        <div id="login">
+                            <div class="control-group">
+                                    <label>姓名:</label>
+                                    <input class="form-control" type="text" name="account" placeholder="请输入姓名"><br><br>
+                            </div>
+
+                            <div class="control-group">
+                                    <label>密码:</label>
+                                    <input class="form-control" type="password" name="password" placeholder="请输入密码"><br><br>
+                            </div> 
+                            
+                            <button class="btn btn-primary btn-block" id="submit">确认</button> 
+                            <a href="/register">注册</a>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        $('#submit').on('click',function(){
+            var a=$('#login input[name="account"]')[0]
+            var p=$('#login input[name="password"]')[0]
+            console.log(a.value)
+            console.log(p.value)
+            if (a.value.length==0||p.value.length==0){
+                alert("输入错误")
+            }
+            // if (p.value.length<6){
+            //     alert("密码太短")
+            // }
+            $.ajax({
+                url:'/login',
+                type:'POST',
+                data:{
+                    account:a.value,
+                    password:p.value
+                },
+                dataType:'json'
+            }).success(function(res){
+                console.log(res)
+                if (res.message=="登陆成功"&&res.status==200){
+                    // alert("登录成功")
+                    localStorage.setItem('id',res.data.id)
+                    localStorage.setItem('account',res.data.account)
+                    window.location.href='/'
+                }
+                else{
+                    alert("登录信息错误")
+                }
+            })
+            
+        })
+    </script>
+  </body>
+</html>

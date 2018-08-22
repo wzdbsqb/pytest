@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap 101 Template</title>
+    <!-- Bootstrap -->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+        <div class ="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1 class="text-center">书店信息修改</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div id="messagedit">
+                        <div class="control-group">
+                                <label>书店名称:</label>
+                                <input class="form-control" type="text" id="name"><br><br>
+                        </div>
+
+                        <div class="control-group">
+                                <label>电话:</label>
+                                <input class="form-control" type="text" id="tel"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>地址:</label>
+                                <input class="form-control" type="text" id="addr"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>类型:</label>
+                                <input class="form-control" type="text" id="tag"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>简介:</label>
+                                <input class="form-control" type="text" id="intro"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>纬度:</label>
+                                <input class="form-control" type="text" id="lat"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>经度:</label>
+                                <input class="form-control" type="text" id="long"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>开业时间:</label>
+                                <input class="form-control" type="text" id="dur"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>营业资质:</label>
+                                <input class="form-control" type="text" id="licence"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                            <label>图片:</label>
+                            <form id="form2" action="" method=post enctype=multipart/form-data>
+                                <p><input type=file name=file>
+                                <input type=submit value=Upload> 
+                            </form>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-block" id="submit">确认</button> 
+
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        var name=localStorage.getItem('name')
+        var tel=localStorage.getItem('tel')
+        var addr=localStorage.getItem('addr')
+        var tag=localStorage.getItem('tag')
+        var intro=localStorage.getItem('intro')
+        var lat=localStorage.getItem('lat')
+        var long=localStorage.getItem('long')
+        var dur=localStorage.getItem('dur')
+        var licence=localStorage.getItem('licence')
+        var id=localStorage.getItem('id')
+
+
+        $(form2).attr('action','/saveuser/'+id)
+
+        console.log(name)
+
+        $('#name').val(name)
+        $('#tel').val(tel)
+        $('#addr').val(addr)
+        $('#tag').val(tag)
+        $('#intro').val(intro)
+        $('#lat').val(lat)
+        $('#long').val(long)
+        $('#dur').val(dur)
+        $('#licence').val(licence)
+
+
+        $('#submit').on('click',function(){
+            var n=$('#name')[0]
+            var t=$('#tel')[0]
+            var a=$('#addr')[0]
+            var ta=$('#tag')[0]
+            var i=$('#intro')[0]
+            var la=$('#lat')[0]
+            var lo=$('#long')[0]
+            var d=$('#dur')[0]
+            var li=$('#licence')[0]
+
+            console.log(n.value)
+            console.log(t.value)
+            console.log(a.value)
+            console.log(ta.value)
+            console.log(i.value)
+            console.log(la.value)
+            console.log(lo.value)
+            console.log(d.value)
+            console.log(li.value)
+
+            $.ajax({
+                url:'/messagedit',
+                type:'POST',
+                data:{
+                    id:id,
+                    name:n.value,
+                    tel:t.value,
+                    addr:a.value,
+                    tag:ta.value,
+                    intro:i.value,
+                    lat:la.value,
+                    long:lo.value,
+                    dur:d.value,
+                    licence:li.value
+                },
+                dataType:'json'
+            }).success(function(res){
+                console.log(res)
+                if (res.message=="修改成功"&&res.status==200){
+                    alert('修改信息成功')
+                    window.location.href='/message'
+                }
+                
+            })
+            
+        })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>123123</title>
+        <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/dropzone.css" rel="stylesheet">
+    </head>
+    <body >
+            <h3 class="text-center">选择并上传Excel</h3>
+            <form id="dropzone" action="" class="dropzone" method="post"></form>
+            <button class="btn btn-primary btn-block" id="submit">返回</button> 
+
+        
+        <script src="/static/jquery.js"></script>
+        <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+        <script src="/static/dropzone.js"></script>
+        <script src="/static/echarts.min.js"></script>
+
+
+        <script type="text/javascript">
+            var id=localStorage.getItem('id')
+            $(function(){
+                Dropzone.options.dropzone={
+                    url:'/saveall/'+id,
+                    clickable:true,
+                    acceptedFiles:'.xlsx',
+                    dictDefaultMessage:'拖放Excel到此位置或单击选择文件',
+                    dictInvalidFileType:'错误的文件类型',
+                    dictFileTooBig:'文件过大',
+                    dictResponseError:'与服务器连接失败',
+                    dictCancelUpload:'已取消',
+                    dictCancelUploadConfirmation:'确认取消上传'
+                }
+            })
+        </script>
+        <script>
+                $('#submit').on('click',function(){
+                    location.href='/message'
+                })
+        </script>
+    </body>
+</html>     

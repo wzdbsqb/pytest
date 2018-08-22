@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>密码修改</title>
+    <!-- Bootstrap -->
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="container">
+        <div class ="row">
+            <div class="col-md-12">
+                <div class="page-header">
+                    <h1 class="text-center">密码修改</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div id="changepwd">
+                        <div class="control-group">
+                                <label>原密码:</label>
+                                <input class="form-control" type="password" id="password" name="password"><br><br>
+                        </div>
+
+                        <div class="control-group">
+                                <label>新密码:</label>
+                                <input class="form-control" type="password" id="password1" name="password1"><br><br>
+                        </div> 
+
+                        <div class="control-group">
+                                <label>确认密码:</label>
+                                <input class="form-control" type="password" id="password2" name="password2"><br><br>
+                        </div> 
+                        
+                        <button class="btn btn-primary btn-block" id="submit">确认</button> 
+
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="/static/jquery.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+    <script>
+        var p=$('#register input[name="password"]')[0]
+        var p1=$('#register input[name="password1"]')[0]
+        var p2=$('#register input[name="password2"]')[0]
+
+        var id=localStorage.getItem('id')
+
+
+        $('#submit').on('click',function(){
+            $.ajax({
+                url:'/getpwd/'+id,
+                type:'GET',
+                dataType:'json'
+            }).success(function(res){
+                console.log(res.data.password)
+                if($('#password')[0].value != res.data.password){
+                    alert('原密码输入错误')
+                }
+                else if($('#password1')[0].value != $('#password2')[0].value){
+                    alert('两次密码不一样!')
+                }
+                else{
+                    $.ajax({
+                    url:'/changepwd',
+                    type:'POST',
+                    data:{
+                        id:id,
+                        password:$('#password1')[0].value
+                    },
+                    dataType:'json'
+                }).success(function(res){
+                    if(res.message=='修改成功'){
+                        alert('修改密码成功')
+                        location.href='/login'
+                    }
+                })
+                }      
+            })
+        })
+    </script>
+  </body>
+</html>
